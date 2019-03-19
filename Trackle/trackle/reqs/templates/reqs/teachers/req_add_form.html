@@ -47,10 +47,20 @@
   <div class="container-fluid">
   <div class="row">
       <div class="col-lg-6">
-          <input type="text" class="search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search for requirements . . .">
+          <input type="text" class="search" id="sectionInput" onkeyup="SearchFunctionSection()" placeholder="Search for section . . .">
       </div>
       <div class="col-lg-6">
-          <input type="text" class="search" id="SubjectInput" onkeyup="SearchFunctionSubjects()" placeholder="Search by subjects . . .">
+          <input type="text" class="search" id="dateInput" onkeyup="SearchFunctionDate()" placeholder="Search by date . . .">
+      </div>
+  </div>
+  </div>
+  <div class="container-fluid">
+  <div class="row">
+      <div class="col-lg-6">
+          <input type="text" class="search" id="subjectInput" onkeyup="SearchFunctionSubject()" placeholder="Search for subject . . .">
+      </div>
+      <div class="col-lg-6">
+          <input type="text" class="search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search by requirement . . .">
       </div>
   </div>
   </div>
@@ -65,8 +75,6 @@
   </table>
 
   <script>
-
-
 
       $(document).ready(function(){})
 
@@ -111,6 +119,127 @@
           reqTable.addRow(i)
       }
 
+      // looking for conflicts when teacher sets the date na
+      function getCol(matrix, col){
+           var column = [];
+           for(var i=0; i<matrix.length; i++){
+              column.push(matrix[i][col]);
+           }
+           return column;
+        }
+      var subjectSectionDict = [[]]
+      for (req in reqTable.reqs){
+
+          if (!(getCol(subjectSectionDict,0).includes(reqTable.reqs[req].subject))){
+              subjectSectionDict.push([reqTable.reqs[req].subject, reqTable.reqs[req].section])
+          }
+      }
+
+      var loads = []
+      var sections = []
+      var dates = []
+      for (req in reqTable.reqs){
+          if (!(sections.includes(reqTable.reqs[req].section))){
+              sections.push(reqTable.reqs[req].section)
+          }
+      }
+      for (req in reqTable.reqs){
+          newdate = new Date(reqTable.reqs[req].dueDate)
+          if (!(dates.includes(newdate))){
+              dates.push(newdate)
+          }
+      }
+      //[section,[[date,number],[date,number]]]
+      for (i in sections) {
+          loads.push([sections[i],[]])
+      }
+
+      for(req in reqTable.reqs){
+          section = reqTable.reqs[req].section
+          dueDate = new Date(reqTable.reqs[req].dueDate)
+          for (i in loads) {
+              if (loads[i][0] == section){
+                  loads[i][1].push(dueDate)
+              }
+          }
+      }
+
+      var sectionLoads = {}
+      for (i in sections) {
+          sectionLoads[sections[i]] = {}
+      }
+      for (i in loads) {
+          var section = loads[i][0]
+          var dates = loads[i][1]
+          var counts = {}
+          for (var i = 0; i < dates.length; i++) {
+            var date = dates[i]
+            if (!counts[date]){
+                counts[date] = 1
+            } else {
+                counts[date]++
+            }
+          }
+          console.log(section)
+          sectionLoads[section] = counts
+
+
+      }
+
+      var subjectinput = document.getElementsByClassName("select form-control")[0];
+      var dateinput = document.getElementsByClassName("dateinput form-control")[0];
+      subjectinput.addEventListener("input", checkConflict);
+      document.addEventListener("click", checkConflict);
+      dateinput.addEventListener("mouseleave", checkConflict);
+      var subValNum, subValue, dateValue, sectionValue
+
+
+      function checkConflict(){
+          console.log(subValue)
+          console.log(dateValue)
+          subValNum = subjectinput.value;
+          dateValue = new Date(dateinput.value)
+
+          optionList = []
+          for (i in document.getElementsByClassName("select form-control")[0].options) {
+              optionList.push([document.getElementsByClassName("select form-control")[0].options[i].value ,
+              document.getElementsByClassName("select form-control")[0].options[i].innerHTML
+              ])
+          }
+
+          for (i in optionList) {
+              if (optionList[i][0] == subValNum) {
+                  subValue = optionList[i][1]
+              }
+          }
+          for (i in subjectSectionDict) {
+              if (subjectSectionDict[i][0] == subValue) {
+                  sectionValue = subjectSectionDict[i][1]
+              }
+           if (!(getCol(subjectSectionDict,0).includes(subValue))){
+                  sectionValue = "None"
+              }
+
+          }
+
+          if (sectionLoads[sectionValue][dateValue] >= 2){
+              dateinput.style.background = 'red'
+          } else {
+              dateinput.style.background = 'white'
+          }
+
+      }
+
+      //finally
+
+
+
+
+
+
+
+
+
       function SearchFunctionReqs() {
     // Declare variables
     var input, filter, table, tr, td, i, txtValue;
@@ -121,7 +250,7 @@
 
     // Loop through all table rows, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
+      td = tr[i].getElementsByTagName("td")[2];
       if (td) {
         txtValue = td.textContent || td.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -133,11 +262,11 @@
     }
   }
 
-  function SearchFunctionSubjects() {
+  function SearchFunctionSubject() {
 
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("SubjectInput");
+  input = document.getElementById("subjectInput");
   filter = input.value.toUpperCase();
   table = document.getElementById("DataTable");
   tr = table.getElementsByTagName("tr");
@@ -145,6 +274,52 @@
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
   td = tr[i].getElementsByTagName("td")[1];
+  if (td) {
+    txtValue = td.textContent || td.innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      tr[i].style.display = "";
+    } else {
+      tr[i].style.display = "none";
+    }
+  }
+  }
+  }
+
+  function SearchFunctionDate() {
+
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("dateInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("DataTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+  td = tr[i].getElementsByTagName("td")[3];
+  if (td) {
+    txtValue = td.textContent || td.innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      tr[i].style.display = "";
+    } else {
+      tr[i].style.display = "none";
+    }
+  }
+  }
+  }
+
+  function SearchFunctionSection() {
+
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("sectionInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("DataTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+  td = tr[i].getElementsByTagName("td")[0];
   if (td) {
     txtValue = td.textContent || td.innerText;
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
