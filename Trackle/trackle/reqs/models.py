@@ -11,7 +11,7 @@ class Subject(models.Model):
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subjects')
     sypscience = models.BooleanField()
     name = models.CharField(max_length=30)
-    Section = models.ForeignKey('Section', on_delete=models.CASCADE, blank=True, null=True)
+    Section = models.ForeignKey('Section', on_delete=models.CASCADE, blank=True, null=True, related_name='sub_section')
     color = models.CharField(max_length=7, default='#007bff')
     def __str__(self):
         return self.name
@@ -25,14 +25,13 @@ class Subject(models.Model):
 class Section(models.Model):
     name = models.CharField(max_length=30)
     grade = models.IntegerField(blank=True, null=True)
-    subjects = models.ManyToManyField('Subject', related_name='section', blank=True)
     def __str__(self):
         return self.name
 
 class Requirement(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requirements')
     name = models.CharField(max_length=255)
-    subject = models.ForeignKey('Subject', on_delete=models.CASCADE, related_name='requirements')
+    subject = models.ForeignKey('Subject', on_delete=models.CASCADE, related_name='req_sub')
     details = models.TextField(null=True, blank=True)
     dateAdded = models.DateField(default=now,editable=False)
     dateUpdated = models.DateTimeField(auto_now=True)
