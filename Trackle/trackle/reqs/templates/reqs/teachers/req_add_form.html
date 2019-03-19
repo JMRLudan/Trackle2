@@ -75,7 +75,7 @@
           reqs : {
               {% for requirement in requirement %}
                {{ requirement.name|cut:" "  }} : {
-                  section: "{{requirement.subject.section}}",
+                  section: "{{requirement.req_sub_section}}",
                   subject : "{{ requirement.subject}}",
                   name : "{{ requirement.name }}",
                   dueDate : "{{ requirement.duedate }}",
