@@ -13,6 +13,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
 from ..decorators import teacher_required
 from ..forms import TeacherSignUpForm, RequirementForm
 from ..models import Requirement, User, Subject, Comment, Section
+from datetime import datetime
 
 
 class TeacherSignUpView(CreateView):
@@ -61,20 +62,14 @@ class RequirementCreateView(CreateView):
     model = Requirement
     form_class = RequirementForm
     template_name = 'reqs/teachers/req_add_form.html'
-
-    def get_queryset(self):
-        Subjects = []
-        for i in request.user.requirements.all():
-            if i.subject not in Subjects:
-                Subjects.append(i.subject)
-        Requirements = Requirement.objects.all()
-        Sections = Section.object.all()
+    context_object_name = 'requirement'
 
 
-        queryset = Section.objects.filter() \
-            .select_related('subject') \
-            .order_by('duedate', 'name', 'subject')
-        return queryset
+    def get_context_data(self, **kwargs):
+        kwargs['requirement'] = Requirement.objects.all() \
+                .exclude(duedate__lt=datetime.now().date()) \
+                .order_by('duedate', 'name', 'subject')
+        return super(RequirementCreateView, self).get_context_data(**kwargs)
 
     def get_form_kwargs(self):
         kwargs = super(RequirementCreateView, self).get_form_kwargs()
