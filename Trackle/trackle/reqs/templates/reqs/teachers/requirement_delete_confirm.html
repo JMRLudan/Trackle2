@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'teachers:req_change_list' %}">My Requirements</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'teachers:requirement_change' requirement.pk %}">{{ requirement.name }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Confirm deletion</li>
+    </ol>
+  </nav>
+  <h2 class="mb-3">Confirm deletion</h2>
+  <p class="lead">Are you sure you want to delete the requirement <strong>"{{ requirement.name }}"</strong>? There is no going back.</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger btn-lg">Yes, I'm sure</button>
+    <a href="{% url 'teachers:requirement_change' requirement.pk %}" class="btn btn-outline-secondary btn-lg" role="button">Cancel</a>
+  </form>
+{% endblock %}

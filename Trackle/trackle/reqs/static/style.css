@@ -1,0 +1,8 @@
+/*Padding to avoid having navbar cover the top of the site*/
+body {
+  padding-top: 4.0rem;
+}
+
+.pull-right {
+  float: right !important;
+}

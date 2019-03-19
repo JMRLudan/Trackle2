@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="HomePage.css">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    /* tabs thingy */
+    $(document).ready(function() {
+      $('.tabHdr').on('click',function(){
+        $(".selected").removeClass("selected");
+        $(this).toggleClass("selected");
+        var n = $(this).index(".tabHdr") + 1;
+        $('.tabContent').css("display","none");
+        $('#tab'+n).css("display","block");
+        });
+
+    });
+
+    /*text area autogrow for input*/
+    function auto_grow(element) {
+    element.style.height = "5px";
+    element.style.height = (element.scrollHeight)+"px";
+    }
+
+    </script>
+    <script class="cssdeck" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <title>Student</title>
+  </head>
+  <body>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+          <div class="container">
+            <a class="navbar-brand" href="#">Trackle</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Home
+                    <span class="sr-only">(current)</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"> {% user.username %} </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Log Out</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <header>
+            Home Page
+        </header>
+        <!-- Calendar Filters -->
+        <div class="dropdown show">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filters
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </div>
+<!-- Calendar -->
+
+<nav class='tabNav'>
+  <a href="#tabAug" class='tabHdr'>August</a>
+  <a href="#tabSep" class='tabHdr'>September</a>
+  <a href="#tabOct" class='tabHdr'>October</a>
+  <a href="#tabNov" class='tabHdr'>November</a>
+  <a href="#tabDec" class='tabHdr'>December</a>
+  <a href="#tabJan" class='tabHdr'>January</a>
+  <a href="#tabFeb" class='tabHdr'>February</a>
+  <a href="#tabMar" class='tabHdr'>March</a>
+  <a href="#tabApr" class='tabHdr'>April</a>
+  <a href="#tabMay" class='tabHdr'>May</a>
+</nav>
+<div class='tabContent' id='tab1'>
+    <div class="tg-wrap"><table class="tg" style="undefined;table-layout: fixed; width: 906px">
+  <colgroup>
+  <col style="width: 151px">
+  <col style="width: 151px">
+  <col style="width: 151px">
+  <col style="width: 151px">
+  <col style="width: 151px">
+  <col style="width: 151px">
+  </colgroup>
+    <tr>
+      <th class="tg-z1yq">Monday</th>
+      <th class="tg-baqh">Tuesday</th>
+      <th class="tg-baqh">Wednesday</th>
+      <th class="tg-baqh">Thursday</th>
+      <th class="tg-baqh">Saturday</th>
+      <th class="tg-baqh">Sunday</th>
+    </tr>
+    <tr>
+      <td class="tg-0lax">
+    <span class="day"> 1</span><br>
+    <button type="button" class="ReqEntry">Physics</button><br>
+    <button type="button" class="ReqEntry">Biology</button><br>
+    <button type="button" class="ReqEntry">Math</button><br>
+    <button type="button" class="ReqEntry">Statistics</button><br>
+      </td>
+      <td class="tg-0lax">2</td>
+      <td class="tg-0lax">3</td>
+      <td class="tg-0lax">4</td>
+      <td class="tg-0lax">5</td>
+      <td class="tg-0lax">6</td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">7</td>
+      <td class="tg-0lax">8</td>
+      <td class="tg-0lax">9</td>
+      <td class="tg-0lax">10</td>
+      <td class="tg-0lax">11</td>
+      <td class="tg-0lax">12</td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">13</td>
+      <td class="tg-0lax">14</td>
+      <td class="tg-0lax">15</td>
+      <td class="tg-0lax">16</td>
+      <td class="tg-0lax">17</td>
+      <td class="tg-0lax">18</td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">19</td>
+      <td class="tg-0lax">20</td>
+      <td class="tg-0lax">21</td>
+      <td class="tg-0lax">22</td>
+      <td class="tg-0lax">23</td>
+      <td class="tg-0lax">24</td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">25</td>
+      <td class="tg-0lax">26</td>
+      <td class="tg-0lax">27</td>
+      <td class="tg-0lax">28</td>
+      <td class="tg-0lax">29</td>
+      <td class="tg-0lax">30</td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">31</td>
+      <td class="tg-0lax"></td>
+      <td class="tg-0lax"></td>
+      <td class="tg-0lax"></td>
+      <td class="tg-0lax"></td>
+      <td class="tg-0lax"></td>
+    </tr>
+  </table></div>
+</div>
+<div class='tabContent' id='tab2'>
+    <div class="tg-wrap"><table class="tg" style="undefined;table-layout: fixed; width: 906px">
+  <colgroup>
+  <col style="width: 151px">
+  <col style="width: 151px">
+  <col style="width: 151px">
+  <col style="width: 151px">
+  <col style="width: 151px">
+  <col style="width: 151px">
+  </colgroup>
+    <tr>
+      <th class="tg-z1yq">Monday</th>
+      <th class="tg-baqh">Tuesday</th>
+      <th class="tg-baqh">Wednesday</th>
+      <th class="tg-baqh">Thursday</th>
+      <th class="tg-baqh">Saturday</th>
+      <th class="tg-baqh">Sunday</th>
+    </tr>
+    <tr>
+      <td class="tg-0lax">1</td>
+      <td class="tg-0lax">2</td>
+      <td class="tg-0lax">3</td>
+      <td class="tg-0lax">4</td>
+      <td class="tg-0lax">5</td>
+      <td class="tg-0lax">6</td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">7</td>
+      <td class="tg-0lax">8</td>
+      <td class="tg-0lax">9</td>
+      <td class="tg-0lax">10</td>
+      <td class="tg-0lax">11</td>
+      <td class="tg-0lax">12</td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">13</td>
+      <td class="tg-0lax">14</td>
+      <td class="tg-0lax">15</td>
+      <td class="tg-0lax">16</td>
+      <td class="tg-0lax">17</td>
+      <td class="tg-0lax">18</td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">19</td>
+      <td class="tg-0lax">20</td>
+      <td class="tg-0lax">21</td>
+      <td class="tg-0lax">22</td>
+      <td class="tg-0lax">23</td>
+      <td class="tg-0lax">24</td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">25</td>
+      <td class="tg-0lax">26</td>
+      <td class="tg-0lax">27</td>
+      <td class="tg-0lax">28</td>
+      <td class="tg-0lax">29</td>
+      <td class="tg-0lax">30</td>
+    </tr>
+    <tr>
+      <td class="tg-0lax">31</td>
+      <td class="tg-0lax"></td>
+      <td class="tg-0lax"></td>
+      <td class="tg-0lax"></td>
+      <td class="tg-0lax"></td>
+      <td class="tg-0lax"></td>
+    </tr>
+  </table></div>
+</div>
+<div class='tabContent' id='tab3'>
+  Contents - Tab 3
+</div>
+<div class='tabContent' id='tab4'>
+  Contents - Tab 4
+</div>
+<div class='tabContent' id='tab5'>
+  Contents - Tab 1
+</div>
+<div class='tabContent' id='tab6'>
+  Contents - Tab 2
+</div>
+<div class='tabContent' id='tab7'>
+  Contents - Tab 3
+</div>
+<div class='tabContent' id='tab8'>
+  Contents - Tab 4
+</div>
+<div class='tabContent' id='tab9'>
+  Contents - Tab 1
+</div>
+<div class='tabContent' id='tab10'>
+  Contents - Tab 2
+</div>
+
+
+<!-- end of calendar -->
+<!-- Card div for reqs information -->
+<h1>Information on this requirement</h1>
+<div id="ReqsCard">
+    <!-- type of reqs-->
+    <div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Dropdown
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a href="#">Action</a></li>
+    <li><a href="#">Another action</a></li>
+    <li><a href="#">Something else here</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="#">Separated link</a></li>
+  </ul>
+    </div>
+    <!-- text area !-->
+    <textarea onkeyup="auto_grow(this)" rows="3"></textarea>
+
+    <!--submit button-->
+    <button type="button" class="btn btn-default">Submit</button>
+
+</div>
+<!-- End of div for reqs information -->
+<!-- Reqs Table !-->
+<h1>Table of Requirements On This Date</h1>
+<div class="tg-wrap"><table class="tg" style="undefined;table-layout: fixed; width: 697px">
+<colgroup>
+<col style="width: 32px">
+<col style="width: 151px">
+<col style="width: 151px">
+<col style="width: 151px">
+<col style="width: 212px">
+</colgroup>
+  <tr>
+    <th class="tg-ml71">#</th>
+    <th class="tg-wp8o">Type</th>
+    <th class="tg-wp8o">Subject</th>
+    <th class="tg-wp8o">Teacher</th>
+    <th class="tg-wp8o">Description</th>
+  </tr>
+  <tr>
+    <td class="tg-73oq">1</td>
+    <td class="tg-wp8o">Requirement</td>
+    <td class="tg-wp8o">Physics</td>
+    <td class="tg-wp8o">Name</td>
+    <td class="tg-73oq">Description</td>
+  </tr>
+  <tr>
+    <td class="tg-73oq">2</td>
+    <td class="tg-wp8o">Requirement</td>
+    <td class="tg-wp8o">Physics</td>
+    <td class="tg-wp8o">Name</td>
+    <td class="tg-73oq">Description</td>
+  </tr>
+</table></div>
+
+  </body>
+</html>

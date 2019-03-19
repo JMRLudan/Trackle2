@@ -1,0 +1,238 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Website Title -->
+    <title>{% block title %}Trackle{% endblock %}</title>
+
+    <!-- Website Icon, Bootstrap, and Font Awesome -->
+    <link rel="icon" href="{% static 'img/calendar.ico' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <style>
+        .search {
+          background-image: url('/css/searchicon.png'); /* Add a search icon to input */
+          background-position: 10px 12px; /* Position the search icon */
+          background-repeat: no-repeat; /* Do not repeat the icon image */
+          font-size: 16px; /* Increase font-size */
+          padding: 12px 20px 12px 40px; /* Add some padding */
+          border: 1px solid #ddd; /* Add a grey border */
+          margin-bottom: 12px; /* Add some space below the input */
+          display: inline;
+          width: 100%;
+        }
+
+    </style>
+
+
+  </head>
+
+  <body>
+    <div class="container my-4">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-sm-12">
+          <div class="row">
+
+            <div class="col-6">
+              <h1 class="logo">
+                <a href="{% url 'home' %}">
+                  Trackle
+                </a>
+              </h1>
+            </div>
+
+            <div class="col-6 text-right">
+              {% if user.is_authenticated %}
+                <p class="pt-3">Logged in as <strong>{{ user.username }}</strong>. <a href="{% url 'logout' %}">Log out</a>.</p>
+              {% else %}
+                <a href="{% url 'login' %}" class="btn btn-light" role="button">Log in</a>
+                <a href="{% url 'signup' %}" class="btn btn-primary" role="button">Sign up</a>
+              {% endif %}
+            </div>
+
+          </div>
+
+          <!-- Displays alerts -->
+          <div class="card mb-3">
+            <div class="card-body">
+              {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              {% endfor %}
+                {% include 'reqs/students/_header.html' with active='new' %}
+                <div class="card">
+                    <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <input type="text" class="search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search for requirements . . .">
+                        </div>
+                        <div class="col-lg-6">
+                            <input type="text" class="search" id="SubjectInput" onkeyup="SearchFunctionSubjects()" placeholder="Search by subjects . . .">
+                        </div>
+                    </div>
+                    </div>
+                    <table id = "DataTable" class="table mb-0">
+                        <tr>
+                            <th> Requirement </th>
+                            <th> Subject </th>
+                            <th> Due Date </th>
+                        </tr>
+                    </table>
+                </div>
+
+
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- More Bootstrap things -->
+    <script>
+
+
+
+        $(document).ready(function(){})
+
+        var stored = []
+        var visible = []
+        var requirements = []
+        {% for requirement in requirements %}
+        requirements.push([("{{ requirement.name }}"), ("{{ requirement.subject}}"),("{{ requirement.duedate }}")])
+        {% endfor %}
+
+        // Load Tables
+
+        var reqTable = {
+            reqs : {
+                {% for requirement in requirements %}
+                 {{ requirement.name|cut:" "  }} : {
+                    name : "{{ requirement.name }}",
+                    subject : "{{ requirement.subject}}",
+                    dueDate : "{{ requirement.duedate }}",
+                    link : String("{% url 'students:requirement_details' requirement.pk %}"),
+                    loaded : true,
+                    overLoaded : false
+                    }
+                {% if not forloop.last  %}
+                    ,
+                {% endif %}
+                {% endfor %}
+            },
+
+
+            addRow : function(variable){
+                var table = document.getElementById("DataTable");
+                var row = table.insertRow(1);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                cell1.innerHTML = this.reqs[variable].name;
+                cell2.innerHTML = this.reqs[variable].subject;
+                cell3.innerHTML = this.reqs[variable].dueDate;
+                cell4.innerHTML = "<a href=" + this.reqs[variable].link + " class='btn btn-primary'> Start requirement</a>"
+
+                this.loaded = true;
+                stored.push(variable);
+                }
+            }
+
+
+        //load all tables
+        for (i in reqTable.reqs) {
+            reqTable.addRow(i)
+        }
+        // Conflict Detection
+        var dates = []
+        var counts = {}
+        var limitReached = []
+        for (req in reqTable.reqs) {
+            dates.push(reqTable.reqs[req].dueDate);
+        }
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+        }
+
+        for (var i = 0; i < dates.length; i++) {
+          var num = dates[i];
+          counts[num] = counts[num] ? counts[num] + 1 : 1;
+        }
+        for (i in counts){if (counts[i] >= 2) {limitReached.push(i)}}
+
+        table = document.getElementById("DataTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[2];
+
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (limitReached.includes(txtValue)) {
+              tr[i].style.color = "red";
+            }
+            }
+          }
+
+        function SearchFunctionReqs() {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("reqInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("DataTable");
+      tr = table.getElementsByTagName("tr");
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+
+    function SearchFunctionSubjects() {
+
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("SubjectInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("DataTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

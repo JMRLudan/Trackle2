@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'teachers:req_change_list' %}">My Requirements</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Create a New Subject</li>
+    </ol>
+  </nav>
+  <h2 class="mb-3">Create a New Subject</h2>
+  <div class="row">
+    <div class="col-md-6 col-sm-8 col-12">
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Create</button>
+        <a href="{% url 'teachers:req_change_list' %}" class="btn btn-outline-secondary" role="button">Cancel</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}
