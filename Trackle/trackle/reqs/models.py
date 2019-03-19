@@ -25,7 +25,6 @@ class Subject(models.Model):
 class Section(models.Model):
     name = models.CharField(max_length=30)
     grade = models.IntegerField(blank=True, null=True)
-    subjects = models.ManyToManyField('Subject', related_name='section', blank=True)
     def __str__(self):
         return self.name
 

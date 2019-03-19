@@ -45,7 +45,8 @@ class StudentSignUpForm(UserCreationForm):
         section = self.cleaned_data['section']  # No need to use get() here
         student = Student.objects.create(user=user, section=section)
         student.subjects.add(*self.cleaned_data.get('subjects'))
-        student.subjects.add(*self.cleaned_data['section'].subjects.all())
+        sectionsubs = Subject.objects.filter(section=section)
+        student.subjects.add(sectionsubs)
         return user
 
 
