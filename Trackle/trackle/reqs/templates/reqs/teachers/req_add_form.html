@@ -57,8 +57,9 @@
 
   <table id = "DataTable" class="table mb-0">
       <tr>
-          <th> Requirement </th>
+          <th> Section </th>
           <th> Subject </th>
+          <th> Requirement </th>
           <th> Due Date </th>
       </tr>
   </table>
@@ -75,7 +76,7 @@
           reqs : {
               {% for requirement in requirement %}
                {{ requirement.name|cut:" "  }} : {
-                  section: "{{requirement.req_sub_section}}",
+                  section: "{{requirement.subject.section}}",
                   subject : "{{ requirement.subject}}",
                   name : "{{ requirement.name }}",
                   dueDate : "{{ requirement.duedate }}",
