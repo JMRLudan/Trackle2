@@ -37,7 +37,7 @@
                 <th>Date Written</th>
                 <th>Content</th>
                 <th class="text-right">
-                  <a href="{% url 'students:comment_add' pk=requirement.pk %}" class="btn btn-primary">Add Comment</a>
+                  <a href="{% url 'cid:comment_add' pk=requirement.pk %}" class="btn btn-primary">Add Comment</a>
                 </th>
               </tr>
             </thead>
@@ -59,8 +59,6 @@
         </table>
 
     </div>
-
-    <a href="{% url 'students:report_add' pk=requirement.pk %}" class="btn btn-warning">Report Requirement</a>
 
 
     {% endfor %}

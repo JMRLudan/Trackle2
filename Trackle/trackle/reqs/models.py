@@ -6,6 +6,7 @@ from django.utils.timezone import now
 class User(AbstractUser):
     is_student = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
+    is_cid = models.BooleanField(default=False)
 
 class Subject(models.Model):
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subjects')
@@ -46,6 +47,17 @@ class Comment(models.Model):
     dateAdded = models.DateField(default=now,editable=False)
     content = models.TextField(null=True, blank=True)
 
+    def __str__(self):
+        return (str(self.writer) + str(self.requirement.name) + str(self.dateAdded))
+
+class Report(models.Model):
+    writer = models.ForeignKey(User, on_delete=models.CASCADE)
+    requirement = models.ForeignKey(Requirement, on_delete=models.CASCADE, related_name='req_report', blank = True, null = True)
+    dateAdded = models.DateField(default=now,editable=False)
+    content = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return (str(self.writer) + str(self.requirement.name) + str(self.dateAdded))
 
 class Student(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE, primary_key=True)

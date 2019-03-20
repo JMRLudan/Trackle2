@@ -10,7 +10,7 @@ from django.views.generic import CreateView, ListView, UpdateView
 
 from ..decorators import student_required
 from ..forms import StudentSubjectsForm, StudentSignUpForm
-from ..models import Requirement, Student, User, Section, Subject, Comment
+from ..models import Requirement, Student, User, Section, Subject, Comment, Report
 from datetime import datetime
 
 class StudentSignUpView(CreateView):
@@ -85,6 +85,21 @@ class AddCommentView(CreateView):
         comment.requirement = Requirement.objects.filter(pk = self.kwargs['pk']).first()
         comment.save()
         messages.success(self.request, 'The comment was successfully created!')
+        pk = self.kwargs['pk']
+        return redirect('students:requirement_details', pk)
+
+@method_decorator([login_required, student_required], name='dispatch')
+class AddReportView(CreateView):
+    model = Report
+    fields = ('content',)
+    template_name = 'reqs/students/student_add_report.html'
+
+    def form_valid(self, form):
+        report = form.save(commit=False)
+        report.writer = self.request.user
+        report.requirement = Requirement.objects.filter(pk = self.kwargs['pk']).first()
+        report.save()
+        messages.success(self.request, 'The report was successfully created!')
         pk = self.kwargs['pk']
         return redirect('students:requirement_details', pk)
 
