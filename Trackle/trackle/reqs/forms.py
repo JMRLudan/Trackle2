@@ -53,7 +53,7 @@ class StudentSignUpForm(UserCreationForm):
 class StudentSubjectsForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ('subjects', )
+        fields = ('subjects',)
         widgets = {
             'subjects': forms.CheckboxSelectMultiple
         }

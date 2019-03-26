@@ -47,7 +47,7 @@ class RequirementListView(ListView):
 @method_decorator([login_required, teacher_required], name='dispatch')
 class SubjectCreateView(CreateView):
     model = Subject
-    fields = ('name','sypscience','Section',)
+    fields = ('name','sypscience','section')
     template_name = 'reqs/teachers/sub_add_form.html'
 
     def form_valid(self, form):

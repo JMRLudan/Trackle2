@@ -8,6 +8,12 @@ class User(AbstractUser):
     is_teacher = models.BooleanField(default=False)
     is_cid = models.BooleanField(default=False)
 
+class Section(models.Model):
+    name = models.CharField(max_length=30)
+    grade = models.IntegerField(blank=True, null=True)
+    def __str__(self):
+        return self.name
+
 class Subject(models.Model):
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subjects')
     sypscience = models.BooleanField()
@@ -22,12 +28,6 @@ class Subject(models.Model):
         color = escape(self.color)
         html = '<span class="badge badge-primary" style="background-color: %s">%s</span>' % (color, name)
         return mark_safe(html)
-
-class Section(models.Model):
-    name = models.CharField(max_length=30)
-    grade = models.IntegerField(blank=True, null=True)
-    def __str__(self):
-        return self.name
 
 class Requirement(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requirements')
@@ -63,7 +63,6 @@ class Student(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE, primary_key=True)
     subjects = models.ManyToManyField('Subject', related_name='subjected_students')
     section = models.ForeignKey('Section', on_delete=models.CASCADE, related_name='Student_Section')
-
 
     def __str__(self):
         return self.user.username
