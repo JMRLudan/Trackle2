@@ -15,7 +15,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     {% block head %}{% endblock %}
     <link rel="stylesheet" type="text/css" href="{% static '/css/app.css' %}">
-
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="1082638202356-2af0ljcr22cbcopiq56tf82ca18i5o1q.apps.googleusercontent.com">
   </head>
 
   <body>
@@ -36,6 +37,7 @@
               {% if user.is_authenticated %}
                 <p class="pt-3">Logged in as <strong>{{ user.username }}</strong>. <a href="{% url 'logout' %}">Log out</a>.</p>
               {% else %}
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
                 <a href="{% url 'login' %}" class="btn btn-light" role="button">Log in</a>
                 <a href="{% url 'signup' %}" class="btn btn-primary" role="button">Sign up</a>
               {% endif %}
