@@ -56,7 +56,7 @@ class RequirementListView(ListView):
         student_subjects = student.subjects.values_list('pk', flat=True)
         queryset = Requirement.objects.filter(subject__in=student_subjects) \
                 .exclude(duedate__lt=datetime.now().date()) \
-                .order_by('duedate', 'name', 'subject')
+                .order_by('-duedate', '-name', '-subject')
         return queryset
 
 
@@ -70,7 +70,7 @@ class TakenRequirementListView(ListView):
         student_subjects = student.subjects.values_list('pk', flat=True)
         queryset = Requirement.objects.filter(subject__in=student_subjects) \
                 .exclude(duedate__gt=datetime.now().date()) \
-                .order_by('duedate', 'name', 'subject')
+                .order_by('-duedate', '-name', '-subject')
         return queryset
 
 @method_decorator([login_required, student_required], name='dispatch')

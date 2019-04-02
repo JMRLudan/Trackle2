@@ -41,7 +41,7 @@ class RequirementListView(ListView):
     def get_queryset(self):
         queryset = self.request.user.requirements \
             .select_related('subject') \
-            .order_by('duedate', 'name', 'subject')
+            .order_by('-duedate', '-name', '-subject')
         return queryset
 
 @method_decorator([login_required, teacher_required], name='dispatch')
