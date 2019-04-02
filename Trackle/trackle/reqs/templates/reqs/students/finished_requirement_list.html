@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
-{% block content %}
-  {% include 'reqs/students/_header.html' with active='taken' %}
+{% block head %}
   <style>
       .search {
         background-image: url('/css/searchicon.png'); /* Add a search icon to input */
@@ -14,27 +13,32 @@
         display: inline;
         width: 100%;
       }
-
   </style>
+{% endblock %}
 
+{% block content %}
+  {% include 'reqs/students/_header.html' with active='taken' %}
+  <div class="container-fluid">
+  <div class="row">
+      <div class="col-lg-6">
+          <input type="text" class="search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search for requirements . . .">
+      </div>
+      <div class="col-lg-6">
+          <input type="text" class="search" id="SubjectInput" onkeyup="SearchFunctionSubjects()" placeholder="Search by subjects . . .">
+      </div>
+  </div>
+  </div>
   <div class="card">
-      <div class="container-fluid">
-      <div class="row">
-          <div class="col-lg-6">
-              <input type="text" class="search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search for requirements . . .">
-          </div>
-          <div class="col-lg-6">
-              <input type="text" class="search" id="SubjectInput" onkeyup="SearchFunctionSubjects()" placeholder="Search by subjects . . .">
-          </div>
-      </div>
-      </div>
-      <table id = "DataTable" class="table mb-0">
-          <tr>
-              <th> Requirement </th>
-              <th> Subject </th>
-              <th> Due Date </th>
-          </tr>
-      </table>
+<table id = "DataTable" class="table mb-0">
+    <thead class="thead-light">
+        <tr>
+            <th style="width: 30%">Requirement</th>
+            <th style="width: 25%">Subject</th>
+            <th style="width: 20%">Due Date</th>
+            <th style="width: 25%"></th>
+        </tr>
+    </thead>
+</table>
   </div>
 
   <script>
@@ -80,7 +84,7 @@
               cell1.innerHTML = this.reqs[variable].name;
               cell2.innerHTML = this.reqs[variable].subject;
               cell3.innerHTML = this.reqs[variable].dueDate;
-              cell4.innerHTML = "<a href=" + this.reqs[variable].link + " class='btn btn-primary'> Start requirement</a>"
+              cell4.innerHTML = "<a href=" + this.reqs[variable].link + " class='btn btn-info'>Requirement Details</a>"
 
               this.loaded = true;
               stored.push(variable);
@@ -118,7 +122,8 @@
         if (td) {
           txtValue = td.textContent || td.innerText;
           if (limitReached.includes(txtValue)) {
-            tr[i].style.color = "red";
+            // tr[i].style.color = "red";
+            tr[i].className = "table-danger";
           }
           }
         }

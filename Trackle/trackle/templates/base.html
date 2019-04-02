@@ -13,8 +13,21 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+    <!-- Optional Head Code -->
     {% block head %}{% endblock %}
+
+    <!-- CSS varies based on user -->
+
+    {% if not user.is_authenticated %}
+      <link rel="stylesheet" type="text/css" href="{% static '/css/guest.css' %}">
+    {% elif user.is_teacher or user.is_cid %}
+      <link rel="stylesheet" type="text/css" href="{% static '/css/teacher.css' %}">
+    {% else %}
+      <link rel="stylesheet" type="text/css" href="{% static '/css/student.css' %}">
+    {% endif %}
     <link rel="stylesheet" type="text/css" href="{% static '/css/app.css' %}">
+    <!-- Google API -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta name="google-signin-client_id" content="1082638202356-2af0ljcr22cbcopiq56tf82ca18i5o1q.apps.googleusercontent.com">
   </head>
