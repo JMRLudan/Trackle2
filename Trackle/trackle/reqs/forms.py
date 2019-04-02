@@ -46,7 +46,8 @@ class StudentSignUpForm(UserCreationForm):
         student = Student.objects.create(user=user, section=section)
         student.subjects.add(*self.cleaned_data.get('subjects'))
         sectionsubs = Subject.objects.filter(section=section)
-        student.subjects.add(sectionsubs)
+        sectionsubs = list(sectionsubs)
+        student.subjects.add(*sectionsubs)
         return user
 
 
