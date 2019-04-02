@@ -24,6 +24,14 @@ class RequirementListView(ListView):
         queryset = Requirement.objects.all()
         return queryset
 
+
+    def get_context_data(self, **kwargs):
+        kwargs['requirement'] = Requirement.objects.all() \
+                .exclude(duedate__lt=datetime.now().date()) \
+                .order_by('duedate', 'name', 'subject')
+        return super(RequirementListView, self).get_context_data(**kwargs)
+
+
 @method_decorator([login_required, cid_required], name='dispatch')
 class RequirementView(ListView):
     context_object_name = 'req'

@@ -69,22 +69,34 @@
                   </button>
                 </div>
               {% endfor %}
-                {% include 'reqs/students/_header.html' with active='new' %}
+              <h1 align="center"> Requirements </h1>
                 <div class="card">
+                    <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <input type="text" class="search" id="SectionInput" onkeyup="SearchFunctionSection()" placeholder="Search for Sections . . .">
+                        </div>
+                        <div class="col-lg-6">
+                            <input type="text" class="search" id="TeacherInput" onkeyup="SearchFunctionTeacher()" placeholder="Search by Teachers . . .">
+                        </div>
+                    </div>
+                    </div>
                     <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-6">
                             <input type="text" class="search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search for requirements . . .">
                         </div>
                         <div class="col-lg-6">
-                            <input type="text" class="search" id="SubjectInput" onkeyup="SearchFunctionSubjects()" placeholder="Search by subjects . . .">
+                            <input type="text" class="search" id="DateInput" onkeyup="SearchFunctionDate()" placeholder="Search by Date . . .">
                         </div>
                     </div>
                     </div>
                     <table id = "DataTable" class="table mb-0">
                         <tr>
-                            <th> Requirement </th>
+                            <th> Section </th>
+                            <th> Teacher </th>
                             <th> Subject </th>
+                            <th> Requirement </th>
                             <th> Due Date </th>
                         </tr>
                     </table>
@@ -102,27 +114,19 @@
     <!-- More Bootstrap things -->
     <script>
 
-
-
         $(document).ready(function(){})
-
-        var stored = []
-        var visible = []
-        var requirements = []
-        {% for requirement in requirements %}
-        requirements.push([("{{ requirement.name }}"), ("{{ requirement.subject}}"),("{{ requirement.duedate }}")])
-        {% endfor %}
 
         // Load Tables
 
         var reqTable = {
             reqs : {
-                {% for requirement in requirements %}
+                {% for requirement in requirement %}
                  {{ requirement.name|cut:" "  }} : {
-                    name : "{{ requirement.name }}",
+                    section: "{{requirement.subject.section}}",
                     subject : "{{ requirement.subject}}",
+                    teacher : "{{ requirement.owner}}",
+                    name : "{{ requirement.name }}",
                     dueDate : "{{ requirement.duedate }}",
-                    link : String("{% url 'cid:requirement_details' requirement.pk %}"),
                     loaded : true,
                     overLoaded : false
                     }
@@ -140,52 +144,111 @@
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
                 var cell4 = row.insertCell(3);
-                cell1.innerHTML = this.reqs[variable].name;
-                cell2.innerHTML = this.reqs[variable].subject;
-                cell3.innerHTML = this.reqs[variable].dueDate;
-                cell4.innerHTML = "<a href=" + this.reqs[variable].link + " class='btn btn-primary'> Start requirement</a>"
+                var cell5 = row.insertCell(4);
+                cell1.innerHTML = this.reqs[variable].section;
+                cell2.innerHTML = this.reqs[variable].teacher;
+                cell3.innerHTML = this.reqs[variable].subject;
+                cell4.innerHTML = this.reqs[variable].name;
+                cell5.innerHTML = this.reqs[variable].dueDate;
 
                 this.loaded = true;
-                stored.push(variable);
+                if (this.reqs[variable].overLoaded){
+                    row.style.background='yellow'
+                }
                 }
             }
 
 
-        //load all tables
+        // looking for conflicts when teacher sets the date na
+        function getCol(matrix, col){
+             var column = [];
+             for(var i=0; i<matrix.length; i++){
+                column.push(matrix[i][col]);
+             }
+             return column;
+          }
+        var subjectSectionDict = [[]]
+        for (req in reqTable.reqs){
+
+            if (!(getCol(subjectSectionDict,0).includes(reqTable.reqs[req].subject))){
+                subjectSectionDict.push([reqTable.reqs[req].subject, reqTable.reqs[req].section])
+            }
+        }
+
+        var loads = []
+        var sections = []
+        var dates = []
+        for (req in reqTable.reqs){
+            if (!(sections.includes(reqTable.reqs[req].section))){
+                sections.push(reqTable.reqs[req].section)
+            }
+        }
+        for (req in reqTable.reqs){
+            newdate = new Date(reqTable.reqs[req].dueDate)
+            if (!(dates.includes(newdate))){
+                dates.push(newdate)
+            }
+        }
+        //[section,[[date,number],[date,number]]]
+        for (i in sections) {
+            loads.push([sections[i],[]])
+        }
+
+        for(req in reqTable.reqs){
+            section = reqTable.reqs[req].section
+            dueDate = new Date(reqTable.reqs[req].dueDate)
+            for (i in loads) {
+                if (loads[i][0] == section){
+                    loads[i][1].push(dueDate)
+                }
+            }
+        }
+
+        var sectionLoads = {}
+        for (i in sections) {
+            sectionLoads[sections[i]] = {}
+        }
+        for (i in loads) {
+            var section = loads[i][0]
+            var dates = loads[i][1]
+            var counts = {}
+            for (var i = 0; i < dates.length; i++) {
+              var date = dates[i]
+              if (!counts[date]){
+                  counts[date] = 1
+              } else {
+                  counts[date]++
+              }
+            }
+            console.log(section)
+            sectionLoads[section] = counts
+
+
+        }
+
+        var subValNum, subValue, dateValue, sectionValue
+
+        for (i in reqTable.reqs){
+            dateValue = new Date(reqTable.reqs[i].dueDate)
+            sectionValue = reqTable.reqs[i].section
+            if (sectionLoads[sectionValue][dateValue] >= 2){
+                reqTable.reqs[i].overLoaded = true
+            }
+        }
+
         for (i in reqTable.reqs) {
             reqTable.addRow(i)
         }
-        // Conflict Detection
-        var dates = []
-        var counts = {}
-        var limitReached = []
-        for (req in reqTable.reqs) {
-            dates.push(reqTable.reqs[req].dueDate);
-        }
-        function onlyUnique(value, index, self) {
-            return self.indexOf(value) === index;
-        }
 
-        for (var i = 0; i < dates.length; i++) {
-          var num = dates[i];
-          counts[num] = counts[num] ? counts[num] + 1 : 1;
-        }
-        for (i in counts){if (counts[i] >= 2) {limitReached.push(i)}}
+        //finally
 
 
-        table = document.getElementById("DataTable");
-        tr = table.getElementsByTagName("tr");
 
-        for (i = 0; i < tr.length; i++) {
-          td = tr[i].getElementsByTagName("td")[2];
 
-          if (td) {
-            txtValue = td.textContent || td.innerText;
-            if (limitReached.includes(txtValue)) {
-              tr[i].style.color = "red";
-            }
-            }
-          }
+
+
+
+
 
         function SearchFunctionReqs() {
       // Declare variables
@@ -197,7 +260,7 @@
 
       // Loop through all table rows, and hide those who don't match the search query
       for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[0];
+        td = tr[i].getElementsByTagName("td")[3];
         if (td) {
           txtValue = td.textContent || td.innerText;
           if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -209,17 +272,63 @@
       }
     }
 
-    function SearchFunctionSubjects() {
+    function SearchFunctionSection() {
 
-  // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("SubjectInput");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("DataTable");
-  tr = table.getElementsByTagName("tr");
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("SectionInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("DataTable");
+    tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+    }
+    }
+
+    function SearchFunctionDate() {
+
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("DateInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("DataTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[4];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+    }
+    }
+
+    function SearchFunctionTeacher() {
+
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("TeacherInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("DataTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[1];
     if (td) {
       txtValue = td.textContent || td.innerText;
@@ -229,10 +338,11 @@
         tr[i].style.display = "none";
       }
     }
-  }
-}
+    }
+    }
 
     </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
