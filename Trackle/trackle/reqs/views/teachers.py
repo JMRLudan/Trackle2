@@ -40,6 +40,7 @@ class RequirementListView(ListView):
 
     def get_queryset(self):
         queryset = self.request.user.requirements \
+            .exclude(duedate__lt=datetime.now().date()) \
             .select_related('subject') \
             .order_by('-duedate', '-name', '-subject')
         return queryset

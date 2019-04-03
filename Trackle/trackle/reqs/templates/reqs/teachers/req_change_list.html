@@ -56,7 +56,7 @@
               {% for requirement in requirements %}
                {
                   name : "{{ requirement.name }}",
-                  subject : "{{ requirement.subject}}",
+                  subject : "{{ requirement.subject}}{% if requirement.subject.section %} - {{requirement.subject.section}}{% endif %}",
                   dueDate : "{{ requirement.duedate }}",
                   link : String("{% url 'teachers:requirement_change' requirement.pk %}"),
                   loaded : true,
