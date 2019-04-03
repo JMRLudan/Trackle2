@@ -31,48 +31,61 @@
       <li class="breadcrumb-item active" aria-current="page">Add a New Requirement</li>
     </ol>
   </nav>
-  <h2 class="mb-3">Add a New Requirement</h2>
   <div class="row">
-    <div class="col-md-6 col-sm-8 col-12">
-      <form method="post" novalidate>
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-success">Add</button>
-      </form>
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title mb-3">Add a New Requirement</h3>
+          <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-success">Add</button>
+            <a href="{% url 'teachers:req_change_list' %}" class="btn btn-outline-secondary" role="button">Cancel</a>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title mb-3">Check a Section's Requirements</h3>
+          <div class="container-fluid">
+          <div class="row">
+              <div class="col-lg-6">
+                  <input type="text" class="search" id="sectionInput" onkeyup="SearchFunctionSection()" placeholder="Search for section . . .">
+              </div>
+              <div class="col-lg-6">
+                  <input type="text" class="search" id="dateInput" onkeyup="SearchFunctionDate()" placeholder="Search by date . . .">
+              </div>
+          </div>
+          </div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-6">
+                  <input type="text" class="search" id="subjectInput" onkeyup="SearchFunctionSubject()" placeholder="Search for subject . . .">
+              </div>
+              <div class="col-lg-6">
+                  <input type="text" class="search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search by requirement . . .">
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+          <table id="DataTable" class="table mb-0">
+              <tr>
+                  <th> Section </th>
+                  <th> Subject </th>
+                  <th> Requirement </th>
+                  <th> Due Date </th>
+              </tr>
+          </table>
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
-
-  <h2 class="mb-3">Check a Section's Requirements</h2>
-
-  <div class="container-fluid">
-  <div class="row">
-      <div class="col-lg-6">
-          <input type="text" class="search" id="sectionInput" onkeyup="SearchFunctionSection()" placeholder="Search for section . . .">
-      </div>
-      <div class="col-lg-6">
-          <input type="text" class="search" id="dateInput" onkeyup="SearchFunctionDate()" placeholder="Search by date . . .">
-      </div>
-  </div>
-  </div>
-  <div class="container-fluid">
-  <div class="row">
-      <div class="col-lg-6">
-          <input type="text" class="search" id="subjectInput" onkeyup="SearchFunctionSubject()" placeholder="Search for subject . . .">
-      </div>
-      <div class="col-lg-6">
-          <input type="text" class="search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search by requirement . . .">
-      </div>
-  </div>
-  </div>
-
-  <table id = "DataTable" class="table mb-0">
-      <tr>
-          <th> Section </th>
-          <th> Subject </th>
-          <th> Requirement </th>
-          <th> Due Date </th>
-      </tr>
-  </table>
 
   <script>
 
@@ -180,7 +193,6 @@
                 counts[date]++
             }
           }
-          console.log(section)
           sectionLoads[section] = counts
 
 
@@ -195,8 +207,6 @@
 
 
       function checkConflict(){
-          console.log(subValue)
-          console.log(dateValue)
           subValNum = subjectinput.value;
           dateValue = new Date(dateinput.value)
 
@@ -332,7 +342,6 @@
   }
 
   </script>
-
   <script>
     $(function () {
       $("#id_duedate").datepicker({

@@ -105,7 +105,7 @@ class AddReportView(CreateView):
 
 @method_decorator([login_required, student_required], name='dispatch')
 class RequirementView(ListView):
-    context_object_name = 'req'
+    context_object_name = 'requirement'
     template_name = 'reqs/students/requirement_form.html'
 
     def get_queryset(self):

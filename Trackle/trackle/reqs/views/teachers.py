@@ -68,7 +68,7 @@ class RequirementCreateView(CreateView):
     def get_context_data(self, **kwargs):
         kwargs['requirement'] = Requirement.objects.all() \
                 .exclude(duedate__lt=datetime.now().date()) \
-                .order_by('duedate', 'name', 'subject')
+                .order_by('-duedate', '-subject__section', '-name', '-subject')
         return super(RequirementCreateView, self).get_context_data(**kwargs)
 
     def get_form_kwargs(self):

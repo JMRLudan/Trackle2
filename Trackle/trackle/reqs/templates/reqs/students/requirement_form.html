@@ -3,65 +3,46 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    {% for requirement in req %}
-        <div class="card">
-            <table class="table mb-0">
-                <thead>
-                  <tr>
-                    <th>Requirement</th>
-                    <th>Subject</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                      <td class="align-middle">{{ requirement.name }}</td>
-                      <td class="align-middle">{{ requirement.subject}}</td>
-                      <td class="align-middle">{{ requirement.duedate }}</td>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="align-middle">description:</td>
-                      <td class="align-middle">{{ requirement.details}}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
-
+{% for req in requirement %}
+<div class="row">
+  <div class="col-md-6">
     <div class="card">
-        <table class="table mb-0">
-            <thead>
-              <tr>
-                <th>Comment Writer</th>
-                <th>Date Written</th>
-                <th>Content</th>
-                <th class="text-right">
-                  <a href="{% url 'students:comment_add' pk=requirement.pk %}" class="btn btn-primary">Add Comment</a>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-                {% for comment in requirement.req_comment.all %}
-                <tr>
-                    <td class="align-middle">{{ comment.writer }} </td>
-                    <td class="align-middle">{{ comment.dateAdded }} </td>
-                    <td class="align-middle">{{ comment.content}} </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td class="align-middle"> No comments</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-
+      <div class="card-header">
+        Requirement Details
+      </div>
+      <div class="card-body">
+        <h4 class="card-title mb-2">{{ req.subject }} - {{ req.name }}</h4>
+        <small>due <strong>{{ req.duedate }}</strong></small>
+        <p class="card-text">{{ req.details}}</p>
+        <a href="{% url 'students:report_add' pk=req.pk %}" class="btn btn-warning">Report Requirement</a>
+        <a href="{% url 'students:requirement_list' %}" class="btn btn-primary">Back to Requirement List</a>
+      </div>
     </div>
+  </div>
 
-    <a href="{% url 'students:report_add' pk=requirement.pk %}" class="btn btn-warning">Report Requirement</a>
-
-
-    {% endfor %}
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body table-responsive">
+        <h4 class="card-title mb-2">Comments</h4>
+        <a href="{% url 'students:comment_add' pk=req.pk %}" class="btn btn-primary mb-2">Add Comment</a>
+        {% for comment in req.req_comment.all %}
+        <div class="card mb-1">
+          <div class="card-body">
+            <h6 class="card-title">{{ comment.writer }}</h6>
+            <p class="card-text">{{ comment.content}}</p>
+            <small>{{ comment.dateAdded }}</small>
+          </div>
+        </div>
+        {% empty %}
+        <div class="card">
+          <div class="card-body">
+            <p class="card-text">No comments</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
 {% endblock %}

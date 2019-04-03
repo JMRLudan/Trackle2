@@ -36,7 +36,6 @@ class StudentSignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
 
-
     @transaction.atomic
     def save(self, commit = True):
         user = super().save()
@@ -48,18 +47,6 @@ class StudentSignUpForm(UserCreationForm):
         sectionsubs = Subject.objects.filter(section=section)
         sectionsubs = list(sectionsubs)
         student.subjects.add(*sectionsubs)
-        return user
-
-    @transaction.atomic
-    def save(self, commit = True):
-        user = super().save()
-        user.is_student = True
-        user.save()
-        section = self.cleaned_data['section']  # No need to use get() here
-        student = Student.objects.create(user=user, section=section)
-        student.subjects.add(*self.cleaned_data.get('subjects'))
-        sectionsubs = Subject.objects.filter(section=section)
-        student.subjects.add(sectionsubs)
         return user
 
 class StudentSubjectsForm(forms.ModelForm):

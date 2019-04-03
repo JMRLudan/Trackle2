@@ -20,29 +20,29 @@
 }
 
 .btn-student {
-  color: #fff;
-  background-color: #91afb6;
-  border-color: #91afb6;
+  color: #000;
+  background-color: rgba(39, 139, 176, 0.6);
+  border-color: rgba(39, 139, 176, 0.6);
 }
 
 .btn-student:hover,
 .btn-student:active {
-  color: #fff;
-  background-color: #608993;
-  border-color: #608993;
+  color: #000;
+  background-color: rgba(39, 139, 176, 0.9);
+  border-color: rgba(39, 139, 176, 0.9);
 }
 
 .btn-teacher {
-  color: #fff;
-  background-color: #8980a5;
-  border-color: #8980a5;
+  color: #000;
+  background-color: rgba(34, 230, 168, 0.6);
+  border-color: rgba(34, 230, 168, 0.6);
 }
 
 .btn-teacher:hover,
 .btn-teacher:active {
-  color: #fff;
-  background-color: #66598B;
-  border-color: #66598B;
+  color: #000;
+  background-color: rgba(34, 230, 168, 0.9);
+  border-color: rgba(34, 230, 168, 0.9);
 }
 
 .has-danger .radio,
