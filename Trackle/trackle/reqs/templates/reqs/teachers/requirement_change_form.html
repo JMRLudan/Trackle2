@@ -39,7 +39,7 @@
         <div class="card-body table-responsive">
           <h4 class="card-title mb-2">Comments</h4>
           <a href="{% url 'teachers:comment_add' pk=requirement.pk %}" class="btn btn-primary mb-2">Add Comment</a>
-          {% for comment in req.req_comment.all %}
+          {% for comment in requirement.req_comment.all %}
           <div class="card mb-1">
             <div class="card-body">
               <h6 class="card-title">{{ comment.writer }}</h6>

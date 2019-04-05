@@ -24,8 +24,8 @@ urlpatterns = [
     ], 'classroom'), namespace='teachers')),
 
     path('cid/', include(([
-        path('', cid.Home.as_view(), name='home'),
         path('requirements/', cid.RequirementListView.as_view(), name='requirements_all'),
+        path('finishedrequirements/', cid.DoneRequirementListView.as_view(), name='requirements_done'),
         path('requirement/<int:pk>/', cid.RequirementView.as_view(), name='requirement_details'),
         path('requirement/<int:pk>/comment/', cid.AddCommentView.as_view(), name='comment_add'),
         path('reports/', cid.ReportListView.as_view(), name='reports_all'),

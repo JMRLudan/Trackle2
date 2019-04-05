@@ -10,7 +10,7 @@ def home(request):
         if request.user.is_teacher:
             return redirect('teachers:req_change_list')
         elif request.user.is_cid:
-            return redirect('cid:home')
+            return redirect('cid:requirements_all')
         else:
             return redirect('students:requirement_list')
     return render(request, 'reqs/home.html')

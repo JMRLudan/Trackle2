@@ -1,0 +1,14 @@
+{% if active != 'reports' %}<h4>Number of {% if active == 'reqs' %}current{% elif active == 'done' %}finished{% endif %} requirements: {{ requirement.count}}</h4>
+{% else %}<h4>Number of reports: {{ report.count }}</h4>{% endif %}
+
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'reqs' %} active{% endif %}" href="{% url 'cid:requirements_all' %}">Current Requirements</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'done' %} active{% endif %}" href="{% url 'cid:requirements_done' %}">Finished Requirements</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'reports' %} active{% endif %}" href="{% url 'cid:reports_all' %}">Reports</a>
+  </li>
+</ul>

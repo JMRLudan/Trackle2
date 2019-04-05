@@ -24,13 +24,28 @@ class RequirementListView(ListView):
         queryset = Requirement.objects.all()
         return queryset
 
-
     def get_context_data(self, **kwargs):
         kwargs['requirement'] = Requirement.objects.all() \
                 .exclude(duedate__lt=datetime.now().date()) \
-                .order_by('duedate', 'name', 'subject')
+                .order_by('-duedate', '-name', '-subject')
         return super(RequirementListView, self).get_context_data(**kwargs)
 
+@method_decorator([login_required, cid_required], name='dispatch')
+class DoneRequirementListView(ListView):
+    model = Requirement
+    ordering = ('name', )
+    context_object_name = 'requirements'
+    template_name = 'reqs/cid/cid_requirements_done.html'
+
+    def get_queryset(self):
+        queryset = Requirement.objects.all()
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        kwargs['requirement'] = Requirement.objects.all() \
+                .exclude(duedate__gt=datetime.now().date()) \
+                .order_by('duedate', '-name', '-subject')
+        return super(DoneRequirementListView, self).get_context_data(**kwargs)
 
 @method_decorator([login_required, cid_required], name='dispatch')
 class RequirementView(ListView):
@@ -40,14 +55,6 @@ class RequirementView(ListView):
     def get_queryset(self):
         pk = self.kwargs['pk']
         queryset = Requirement.objects.filter(pk=pk)
-        return queryset
-
-@method_decorator([login_required, cid_required], name='dispatch')
-class Home(ListView):
-    context_object_name = 'req'
-    template_name = 'reqs/cid/cid_home.html'
-    def get_queryset(self):
-        queryset = Requirement.objects.all()
         return queryset
 
 @method_decorator([login_required, cid_required], name='dispatch')
@@ -75,3 +82,8 @@ class ReportListView(ListView):
     def get_queryset(self):
         queryset = Report.objects.all()
         return queryset
+
+    def get_context_data(self, **kwargs):
+        kwargs['report'] = Report.objects.all() \
+                .order_by('dateAdded', '-requirement', '-writer')
+        return super(ReportListView, self).get_context_data(**kwargs)
