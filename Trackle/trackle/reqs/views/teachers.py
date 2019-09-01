@@ -46,6 +46,20 @@ class RequirementListView(ListView):
         return queryset
 
 @method_decorator([login_required, teacher_required], name='dispatch')
+class FinishedRequirementListView(ListView):
+    model = Requirement
+    ordering = ('name', )
+    context_object_name = 'requirements'
+    template_name = 'reqs/teachers/req_finished_list.html'
+
+    def get_queryset(self):
+        queryset = self.request.user.requirements \
+            .exclude(duedate__gt=datetime.now().date()) \
+            .select_related('subject') \
+            .order_by('-duedate', '-name', '-subject')
+        return queryset
+
+@method_decorator([login_required, teacher_required], name='dispatch')
 class SubjectCreateView(CreateView):
     model = Subject
     fields = ('name','sypscience','section')
