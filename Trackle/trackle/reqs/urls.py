@@ -16,6 +16,7 @@ urlpatterns = [
 
     path('teachers/', include(([
         path('', teachers.RequirementListView.as_view(), name='req_change_list'),
+        path('finished', teachers.FinishedRequirementListView.as_view(), name='req_finished_list'),
         path('subjects/add/', teachers.SubjectCreateView.as_view(), name='sub_add'),
         path('requirement/add/', teachers.RequirementCreateView.as_view(), name='req_add'),
         path('requirement/<int:pk>/', teachers.RequirementUpdateView.as_view(), name='requirement_change'),
