@@ -55,6 +55,7 @@ class Report(models.Model):
     requirement = models.ForeignKey(Requirement, on_delete=models.CASCADE, related_name='req_report', blank = True, null = True)
     dateAdded = models.DateField(default=now,editable=False)
     content = models.TextField(null=True, blank=True)
+    checked = models.BooleanField(default=False)
 
     def __str__(self):
         return (str(self.writer) + str(self.requirement.name) + str(self.dateAdded))
