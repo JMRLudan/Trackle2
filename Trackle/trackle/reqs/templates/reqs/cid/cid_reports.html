@@ -36,6 +36,7 @@
         <th><a href="javascript:SortTable(3,'T');">Writer</a> </th>
         <th><a href="javascript:SortTable(4,'D','mdy');">Date Added </a> </th>
         <th> Content </th>
+        <th> Mark as finished </th>
     </tr>
     </thead>
     <tbody>
@@ -57,7 +58,9 @@
                 teacher: "{{report.requirement.owner}}",
                 writer : "{{ report.writer }}",
                 dateAdded : "{{ report.dateAdded}}",
-                content : "{{ report.content }}"
+                link: String("{% url 'cid:requirement_details' report.requirement.pk %}"),
+                content : "{{ report.content }}",
+                reportlink: String("{% url 'cid:report_update' report.pk %}")
                 }
             {% if not forloop.last  %}
                 ,
@@ -75,14 +78,17 @@
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
             var cell6 = row.insertCell(5);
-            cell1.innerHTML = this.reports[variable].requirement;
+            var cell7 = row.insertCell(6);
+            cell1.innerHTML = "<a href=" + this.reports[variable].link + " class='btn btn-link'>" + this.reports[variable].requirement + "</a>";
             cell2.innerHTML = this.reports[variable].subject;
             cell3.innerHTML = this.reports[variable].teacher;
             cell4.innerHTML = this.reports[variable].writer;
             cell5.innerHTML = this.reports[variable].dateAdded;
             cell6.innerHTML = this.reports[variable].content;
+            cell7.innerHTML = "<a href=" + this.reports[variable].reportlink + " class='btn btn-link'>" + "status" + "</a>";
             }
         }
+
 
 
     //load all tables

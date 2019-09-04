@@ -1,5 +1,15 @@
-{% if active != 'reports' %}<h4>Number of {% if active == 'reqs' %}current{% elif active == 'done' %}finished{% endif %} requirements: {{ requirement.count}}</h4>
-{% else %}<h4>Number of reports: {{ report.count }}</h4>{% endif %}
+{% if active == 'reqs' %}
+<h4>Number of current requirements: {{ requirement.count}}</h4>
+{% endif %}
+{% if active == 'done' %}
+<h4>Number of finished requirements: {{ requirement.count}}</h4>
+{% endif %}
+{% if active == 'reports' %}
+<h4>Number of reports: {{ report.count }}</h4>
+{% endif %}
+{% if active == 'reportsDone' %}
+<h4>Number of checked reports: {{ report.count }}</h4>
+{% endif %}
 
 <ul class="nav nav-tabs mb-3">
   <li class="nav-item">
@@ -10,5 +20,8 @@
   </li>
   <li class="nav-item">
     <a class="nav-link{% if active == 'reports' %} active{% endif %}" href="{% url 'cid:reports_all' %}">Reports</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'reportsDone' %} active{% endif %}" href="{% url 'cid:reports_done' %}">Checked Reports</a>
   </li>
 </ul>
