@@ -80,48 +80,10 @@ class ReportListView(ListView):
     template_name = 'reqs/cid/cid_reports.html'
 
     def get_queryset(self):
-        queryset = Report.objects.all() \
-                .exclude(checked= True)
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        kwargs['report'] = Report.objects.all() \
-                .exclude(checked=True)\
-                .order_by('dateAdded', '-requirement', '-writer')
-        return super(ReportListView, self).get_context_data(**kwargs)
-
-@method_decorator([login_required, cid_required], name='dispatch')
-class ReportDoneListView(ListView):
-    model = Report
-    ordering = ('dateAdded', )
-    context_object_name = 'reports'
-    template_name = 'reqs/cid/cid_reports_done.html'
-
-    def get_queryset(self):
-        queryset = Report.objects.all() \
-                .exclude(checked= False)
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        kwargs['report'] = Report.objects.all() \
-                .exclude(checked= False)\
-                .order_by('dateAdded', '-requirement', '-writer')
-        return super(ReportDoneListView, self).get_context_data(**kwargs)
-
-@method_decorator([login_required, cid_required], name='dispatch')
-class ReportUpdateView(UpdateView):
-    model = Report
-    fields = ('checked',)
-    #ADD THING TO UPDATE LAST EDITED
-    context_object_name = 'reports'
-    template_name = 'reqs/cid/cid_report_update.html'
-    success_url = reverse_lazy('cid:reports_all')
-
-    def get_queryset(self):
-        '''
-        This method is an implicit object-level permission management
-        This view will only match the ids of existing requirements that belongs
-        to the logged in user.
-        '''
         queryset = Report.objects.all()
         return queryset
+
+    def get_context_data(self, **kwargs):
+        kwargs['report'] = Report.objects.all() \
+                .order_by('dateAdded', '-requirement', '-writer')
+        return super(ReportListView, self).get_context_data(**kwargs)
