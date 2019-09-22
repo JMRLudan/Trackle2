@@ -1,0 +1,17 @@
+<a href="{% url 'teachers:req_add' %}" class="btn btn-primary mb-3 float-right" role="button">Add a requirement</a>
+
+<a href="{% url 'teachers:sub_add' %}" class="btn btn-primary mb-3 mr-1 float-right" role="button">Create a subject</a>
+
+
+<h2>Requirements</h2>
+
+<br>
+
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'taken' %} active{% endif %}" href="{% url 'teachers:req_change_list' %}">Current</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'new' %} active{% endif %}" href="{% url 'teachers:req_finished_list' %}">Finished</a>
+  </li>
+</ul>

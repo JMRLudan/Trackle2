@@ -21,16 +21,17 @@ class TeacherSignUpForm(UserCreationForm):
 
 
 class StudentSignUpForm(UserCreationForm):
-    subjects = forms.ModelMultipleChoiceField(
-        queryset=Subject.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False
-    )
 
     section = forms.ModelChoiceField(
         queryset=Section.objects.all(),
         widget=forms.Select,
         required=True
+    )
+
+    subjects = forms.ModelMultipleChoiceField(
+        queryset=Subject.objects.filter(sypscience=True),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
     )
 
     class Meta(UserCreationForm.Meta):
@@ -50,9 +51,13 @@ class StudentSignUpForm(UserCreationForm):
         return user
 
 class StudentSubjectsForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(StudentSubjectsForm, self).__init__(*args, **kwargs)
+        self.fields['subjects'].queryset = Subject.objects.filter(sypscience=True)
+
     class Meta:
         model = Student
-        fields = ('subjects',)
+        fields = ('section', 'subjects')
         widgets = {
             'subjects': forms.CheckboxSelectMultiple
         }

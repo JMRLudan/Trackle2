@@ -14,8 +14,8 @@
         <h4 class="card-title mb-2">{{ req.subject }} - {{ req.name }}</h4>
         <small>due <strong>{{ req.duedate }}</strong></small>
         <p class="card-text">{{ req.details}}</p>
-        <a href="{% url 'students:report_add' pk=req.pk %}" class="btn btn-warning">Report Requirement</a>
         <a href="{% url 'students:requirement_list' %}" class="btn btn-primary">Back to Requirement List</a>
+        <a href="{% url 'students:report_add' pk=req.pk %}" class="btn btn-link float-right">Report</a> 
       </div>
     </div>
   </div>

@@ -7,13 +7,10 @@
 
 <style>
     .search {
-
-
-
       font-size: 16px; /* Increase font-size */
-      padding: 12px 20px 12px 40px; /* Add some padding */
+      padding: 6px 20px 6px 20px; /* Add some padding */
       border: 1px solid #ddd; /* Add a grey border */
-      margin-bottom: 12px; /* Add some space below the input */
+      margin-bottom: 6px; /* Add some space below the input */
       display: inline;
       width: 100%;
     }
@@ -53,20 +50,20 @@
           <div class="container-fluid">
           <div class="row">
               <div class="col-lg-6">
-                  <input type="text" class="search" id="sectionInput" onkeyup="SearchFunctionSection()" placeholder="Search for section . . .">
+                  <input type="text" class="search" id="sectionInput" onkeyup="SearchFunctionSection()" placeholder="Search for section...">
               </div>
               <div class="col-lg-6">
-                  <input type="text" class="search" id="dateInput" onkeyup="SearchFunctionDate()" placeholder="Search by date . . .">
+                  <input type="text" class="search" id="dateInput" onkeyup="SearchFunctionDate()" placeholder="Search by date...">
               </div>
           </div>
           </div>
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-6">
-                  <input type="text" class="search" id="subjectInput" onkeyup="SearchFunctionSubject()" placeholder="Search for subject . . .">
+                  <input type="text" class="search" id="subjectInput" onkeyup="SearchFunctionSubject()" placeholder="Search for subject...">
               </div>
               <div class="col-lg-6">
-                  <input type="text" class="search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search by requirement . . .">
+                  <input type="text" class="search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search by requirement.. .">
               </div>
             </div>
           </div>
@@ -348,6 +345,8 @@
   </script>
   <script>
     $(function () {
+
+    }unction () {
       $("#id_duedate").datepicker({
         format:'mm/dd/yyyy',
       });
