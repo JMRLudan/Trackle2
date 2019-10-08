@@ -30,6 +30,8 @@ urlpatterns = [
         path('requirement/<int:pk>/', cid.RequirementView.as_view(), name='requirement_details'),
         path('requirement/<int:pk>/comment/', cid.AddCommentView.as_view(), name='comment_add'),
         path('reports/', cid.ReportListView.as_view(), name='reports_all'),
+        path('reports_done/', cid.ReportDoneListView.as_view(), name='reports_done'),
+        path('reports/<int:pk>/', cid.ReportUpdateView.as_view(), name='report_update'),
     ], 'classroom'), namespace='cid')),
 
 

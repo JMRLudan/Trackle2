@@ -2,8 +2,13 @@
 {% block head %}
   <style>
       .search {
+
+
+
         font-size: 16px; /* Increase font-size */
+        padding: 12px 20px 12px 40px; /* Add some padding */
         border: 1px solid #ddd; /* Add a grey border */
+        margin-bottom: 12px; /* Add some space below the input */
         display: inline;
         width: 100%;
       }
@@ -17,26 +22,13 @@
   </nav>
   {% include 'reqs/teachers/teacher_header.html' with active='taken' %}
 
-
-
   <div class="container-fluid">
   <div class="row">
       <div class="col-lg-6">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-          </div>
-          <input type="text" class="form-control search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search for requirements...">
-        </div>
+          <input type="text" class="search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search for requirements . . .">
       </div>
-
       <div class="col-lg-6">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-          </div>
-          <input type="text" class="form-control search" id="SubjectInput" onkeyup="SearchFunctionSubjects()" placeholder="Search by subject...">
-        </div>
+          <input type="text" class="search" id="SubjectInput" onkeyup="SearchFunctionSubjects()" placeholder="Search by subjects . . .">
       </div>
   </div>
   </div>

@@ -1,40 +1,33 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<style>
-    .search {
-      font-size: 16px; /* Increase font-size */
-      border: 1px solid #ddd; /* Add a grey border */
-      display: inline;
-      width: 100%;
-    }
-</style>
+  <style>
+      .search {
+
+
+
+        font-size: 16px; /* Increase font-size */
+        padding: 12px 20px 12px 40px; /* Add some padding */
+        border: 1px solid #ddd; /* Add a grey border */
+        margin-bottom: 12px; /* Add some space below the input */
+        display: inline;
+        width: 100%;
+      }
+  </style>
 {% endblock %}
 
 {% block content %}
   {% include 'reqs/students/_header.html' with active='taken' %}
   <div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-6">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-            </div>
-            <input type="text" class="form-control search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search for requirements...">
-          </div>
-        </div>
-
-        <div class="col-lg-6">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-            </div>
-            <input type="text" class="form-control search" id="SubjectInput" onkeyup="SearchFunctionSubjects()" placeholder="Search by subject...">
-          </div>
-        </div>
-    </div>
+  <div class="row">
+      <div class="col-lg-6">
+          <input type="text" class="search" id="reqInput" onkeyup="SearchFunctionReqs()" placeholder="Search for requirements . . .">
+      </div>
+      <div class="col-lg-6">
+          <input type="text" class="search" id="SubjectInput" onkeyup="SearchFunctionSubjects()" placeholder="Search by subjects . . .">
+      </div>
   </div>
-
+  </div>
   <div class="card table-responsive">
     <table id = "DataTable" class="table mb-0">
         <thead class="thead-light">
@@ -73,7 +66,7 @@
           var cell1 = row.insertCell(0);
           var cell2 = row.insertCell(1);
           var cell3 = row.insertCell(2);
-          cell1.innerHTML = "<a href=" + rowdata.link + " class='btn btn-link'>" + rowdata.name + "</a>";
+          cell1.innerHTML = "<a href=" + rowdata.link + " class='btn btn-info'>" + rowdata.name + "</a>";
           cell2.innerHTML = rowdata.subject;
           cell3.innerHTML = rowdata.dueDate;
 

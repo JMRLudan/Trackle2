@@ -3,7 +3,9 @@
 <style>
     .search {
       font-size: 16px; /* Increase font-size */
+      padding: 12px 20px 12px 40px; /* Add some padding */
       border: 1px solid #ddd; /* Add a grey border */
+      margin-bottom: 12px; /* Add some space below the input */
       display: inline;
       width: 100%;
     }
@@ -13,29 +15,16 @@
 {% block content %}
 <h1>Requirements</h1>
 {% include 'reqs/cid/cidheader.html' with active='reqs' %}
-
-
 <div class="card">
     <div class="container-fluid">
-      <div class="row">
-          <div class="col-lg-6">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-              </div>
-              <input type="text" class="form-control search" id="SectionInput" onkeyup="SearchFunctionSection()" placeholder="Search by section...">
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-              </div>
-              <input type="text" class="form-control search" id="TeacherInput" onkeyup="SearchFunctionTeacher()" placeholder="Search by teacher...">
-            </div>
-          </div>
-      </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <input type="text" class="search" id="SectionInput" onkeyup="SearchFunctionSection()" placeholder="Search for Sections . . .">
+        </div>
+        <div class="col-lg-6">
+            <input type="text" class="search" id="TeacherInput" onkeyup="SearchFunctionTeacher()" placeholder="Search by Teachers . . .">
+        </div>
+    </div>
     </div>
     <div class="container-fluid">
     <div class="row">
@@ -104,7 +93,7 @@
             cell3.innerHTML = this.reqs[variable].subject;
             cell4.innerHTML = this.reqs[variable].name;
             cell5.innerHTML = this.reqs[variable].dueDate;
-            cell6.innerHTML = "<a href=" + this.reqs[variable].link + " class='btn btn-link'>Requirement Details</a>"
+            cell6.innerHTML = "<a href=" + this.reqs[variable].link + " class='btn btn-info'>Requirement Details</a>"
 
             this.loaded = true;
             if (this.reqs[variable].overLoaded){
