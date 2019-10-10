@@ -22,12 +22,14 @@ class TeacherSignUpForm(UserCreationForm):
 
 class StudentSignUpForm(UserCreationForm):
 
+    # Student selects section/block, subjects come with the section/block
     section = forms.ModelChoiceField(
         queryset=Section.objects.all(),
         widget=forms.Select,
         required=True
     )
 
+    # Only SYP sciences show up here as they aren't specific to a block
     subjects = forms.ModelMultipleChoiceField(
         queryset=Subject.objects.filter(sypscience=True),
         widget=forms.CheckboxSelectMultiple,
@@ -44,6 +46,7 @@ class StudentSignUpForm(UserCreationForm):
         user.save()
         section = self.cleaned_data['section']  # No need to use get() here
         student = Student.objects.create(user=user, section=section)
+        # Adds subjects connected to section to student's list of subjects
         student.subjects.add(*self.cleaned_data.get('subjects'))
         sectionsubs = Subject.objects.filter(section=section)
         sectionsubs = list(sectionsubs)

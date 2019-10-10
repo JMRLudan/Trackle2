@@ -28,7 +28,6 @@ class StudentSignUpView(CreateView):
         return redirect('students:requirement_list')
 
 
-
 @method_decorator([login_required, student_required], name='dispatch')
 class StudentSubjectsView(UpdateView):
     model = Student
