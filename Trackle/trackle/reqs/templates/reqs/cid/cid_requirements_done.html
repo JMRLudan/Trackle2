@@ -43,7 +43,7 @@
         <tr>
             <th><a href="javascript:SortTable(0,'T');"> Section </a> </th>
             <th><a href="javascript:SortTable(1,'T');"> Teacher </a></th>
-            <th><a href="javascript:SortTable(2,'T');"> Subject </a></th>
+            <th><a href="javascript:SortTable(2,'T');"> Class </a></th>
             <th><a href="javascript:SortTable(3,'T');"> Requirement </a></th>
             <th><a href="javascript:SortTable(4,'D','mdy');"> Due Date </a> </th>
         </tr>
@@ -95,7 +95,7 @@
             cell3.innerHTML = this.reqs[variable].subject;
             cell4.innerHTML = this.reqs[variable].name;
             cell5.innerHTML = this.reqs[variable].dueDate;
-            cell6.innerHTML = "<a href=" + this.reqs[variable].link + " class='btn btn-info'>Requirement Details</a>"
+            cell6.innerHTML = "<a href=" + this.reqs[variable].link + " class='btn btn-link'>Requirement Details</a>"
 
             this.loaded = true;
             if (this.reqs[variable].overLoaded){

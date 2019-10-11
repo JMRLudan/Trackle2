@@ -11,7 +11,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
 from ..decorators import teacher_required
-from ..forms import TeacherSignUpForm, RequirementForm
+from ..forms import TeacherSignUpForm, RequirementForm, UpdateRequirementForm
 from ..models import Requirement, User, Subject, Comment, Section
 from datetime import datetime
 
@@ -102,11 +102,17 @@ class RequirementCreateView(CreateView):
 @method_decorator([login_required, teacher_required], name='dispatch')
 class RequirementUpdateView(UpdateView):
     model = Requirement
-    fields = ('name', 'subject', 'details','duedate',)
+    form_class = UpdateRequirementForm
+    # fields = ('name', 'subject', 'details','duedate',)
+    # fields['subject'].label = "Class"
     #ADD THING TO UPDATE LAST EDITED
     context_object_name = 'requirement'
     template_name = 'reqs/teachers/requirement_change_form.html'
 
+    def get_form_kwargs(self):
+        kwargs = super(RequirementUpdateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def get_queryset(self):
         '''
@@ -117,6 +123,7 @@ class RequirementUpdateView(UpdateView):
         return self.request.user.requirements.all()
 
     def get_success_url(self):
+        messages.success(self.request, 'The requirement was successfully updated!')
         return reverse('teachers:requirement_change', kwargs={'pk': self.object.pk})
 
 @method_decorator([login_required, teacher_required], name='dispatch')

@@ -3,8 +3,8 @@
   <span class="text-muted">Section: </span><strong>{{ user.student.section }}</strong>
 </p>
 <p class="text-muted">
-  Subjects:{% for subject in user.student.subjects.all %} {{ subject.name }}{% if not forloop.last  %}, {% endif %}{% endfor %}
-  <a href="{% url 'students:student_subjects' %}"><small>(update subjects)</small></a>
+  Classes:{% for subject in user.student.subjects.all %} {{ subject.name }}{% if not forloop.last  %}, {% endif %}{% endfor %}
+  <a href="{% url 'students:student_subjects' %}"><small>(update classes)</small></a>
 </p>
 
 <ul class="nav nav-tabs mb-3">

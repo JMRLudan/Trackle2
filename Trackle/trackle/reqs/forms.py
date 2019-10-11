@@ -74,3 +74,13 @@ class RequirementForm(forms.ModelForm):
         self.user = user
         super(RequirementForm, self).__init__(*args, **kwargs)
         self.fields['subject'].queryset = Subject.objects.filter(teacher=self.user)
+
+class UpdateRequirementForm(forms.ModelForm):
+    class Meta:
+        model = Requirement
+        fields = ('name', 'subject', 'duedate','details')
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UpdateRequirementForm, self).__init__(*args, **kwargs)
+        self.fields['subject'].queryset = Subject.objects.filter(teacher=self.user)
