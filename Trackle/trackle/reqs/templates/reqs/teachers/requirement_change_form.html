@@ -59,6 +59,47 @@
     </div>
 
   <script>
+    var subjectinput = document.getElementsByClassName("select form-control")[0];
+    var dateinput = document.getElementsByClassName("dateinput form-control")[0];
+    subjectinput.addEventListener("change", checkConflict);
+    dateinput.addEventListener("change", checkConflict);
+    var subValNum, subValue, dateValue, sectionValue
+
+
+    function checkConflict(){
+        subValNum = subjectinput.value;
+        dateValue = new Date(dateinput.value)
+
+        optionList = []
+        for (i in document.getElementsByClassName("select form-control")[0].options) {
+            optionList.push([document.getElementsByClassName("select form-control")[0].options[i].value ,
+            document.getElementsByClassName("select form-control")[0].options[i].innerHTML
+            ])
+        }
+
+        for (i in optionList) {
+            if (optionList[i][0] == subValNum) {
+                subValue = optionList[i][1]
+            }
+        }
+        for (i in subjectSectionDict) {
+            if (subjectSectionDict[i][0] == subValue) {
+                sectionValue = subjectSectionDict[i][1]
+            }
+         if (!(getCol(subjectSectionDict,0).includes(subValue))){
+                sectionValue = "None"
+            }
+
+        }
+
+        if (sectionLoads[sectionValue][dateValue] >= 2){
+            dateinput.style.background = 'red'
+        } else {
+            dateinput.style.background = 'white'
+        }
+
+    }
+
     $(function () {
       $("#id_duedate").datepicker({
         format:'mm/dd/yyyy',

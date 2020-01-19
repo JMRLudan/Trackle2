@@ -201,9 +201,8 @@
 
       var subjectinput = document.getElementsByClassName("select form-control")[0];
       var dateinput = document.getElementsByClassName("dateinput form-control")[0];
-      subjectinput.addEventListener("input", checkConflict);
-      document.addEventListener("click", checkConflict);
-      dateinput.addEventListener("mouseleave", checkConflict);
+      subjectinput.addEventListener("change", checkConflict);
+      dateinput.addEventListener("change", checkConflict);
       var subValNum, subValue, dateValue, sectionValue
 
 
@@ -240,16 +239,6 @@
           }
 
       }
-
-      //finally
-
-
-
-
-
-
-
-
 
       function SearchFunctionReqs() {
     // Declare variables
@@ -377,7 +366,6 @@
     var TableIDvalue = "DataTable";
 
     //
-    //////////////////////////////////////
     var TableLastSortedColumn = -1;
     function SortTable() {
     var sortColumn = parseInt(arguments[0]);
